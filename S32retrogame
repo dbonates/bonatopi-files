@@ -1,0 +1,32 @@
+#!/bin/sh
+PIDFILE=/var/run/retrogame.pid
+NAME="S32retrogame"
+RUN_AS=root
+CMD=/usr/bin/retrogame
+do_start() {
+# "... Starting : retrogame gpio-remapper"
+start-stop-daemon --start --background --user $RUN_AS --pidfile $PIDFILE --make-pidfile --chuid $RUN_AS --startas $CMD
+}
+do_stop() {
+start-stop-daemon --stop --pidfile $PIDFILE
+}
+case "$1" in
+start)
+# "Starting $NAME"
+do_start
+;;
+stop)
+# "Stopping $NAME"
+do_stop
+;;
+restart)
+# "Restarting $NAME"
+do_stop
+do_start
+;;
+*)
+echo "Usage: /etc/init.d/S32retrogame {start|stop|restart}"
+exit 2
+;;
+esac
+exit 0
